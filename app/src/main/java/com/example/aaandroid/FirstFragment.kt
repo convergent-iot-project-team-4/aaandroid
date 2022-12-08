@@ -5,12 +5,17 @@ import android.media.AudioManager
 import android.media.SoundPool
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
 import com.example.aaandroid.databinding.FragmentFirstBinding
+import com.example.aaandroid.domain.WebSocketListener
+import com.example.aaandroid.domain.WebSocketListener.Companion.NORMAL_CLOSURE_STATUS
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.WebSocket
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -21,6 +26,8 @@ class FirstFragment : Fragment() {
     private lateinit var soundPool: SoundPool
     private var highFreq: Int = 0
     private var lowFreq: Int = 0
+    private lateinit var client: OkHttpClient
+    private lateinit var webSocket: WebSocket
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -33,6 +40,44 @@ class FirstFragment : Fragment() {
 
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
 
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        loadSoundPool()
+        openWebSocket()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+        webSocket.close(NORMAL_CLOSURE_STATUS,null)
+        webSocket.cancel()
+    }
+
+    fun openWebSocket() {
+        client = OkHttpClient()
+
+        val request: Request = Request.Builder()
+            .url("ws://10.210.131.68:8000/ws")
+            .build()
+        val listener = WebSocketListener()
+
+
+        binding.highButton.setOnClickListener {
+            Log.d("info","qwerqwer")
+            webSocket = client.newWebSocket(request, listener)
+            Log.d("info","asdfadsf")
+            Log.d("info","zxcvzxcv")
+        }
+        binding.lowButton.setOnClickListener {
+            webSocket.send("asdasdfasdfasdf")
+        }
+    }
+
+    fun loadSoundPool() {
         soundPool = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
         ) {
             val audioAttributes = AudioAttributes.Builder()
@@ -59,24 +104,7 @@ class FirstFragment : Fragment() {
         highFreq = soundPool.load(context,R.raw.high_chirp_sound,1)
         lowFreq = soundPool.load(context,R.raw.low_chirp_sound,2)
 
-
-        return binding.root
-
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
-        binding.highButton.setOnClickListener {
-            soundPool.play(highFreq,1F,1F,0,0,1F)
-        }
-        binding.lowButton.setOnClickListener {
-            soundPool.play(lowFreq,1F,1F,0,0,1F)
-        }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 }
