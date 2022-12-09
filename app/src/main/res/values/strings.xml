@@ -5,7 +5,7 @@
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
-    <string name="high">Play High Freq</string>
+    <string name="connect_server">Attendance</string>
     <string name="low">Play Low Freq</string>
     <string name="record">Record Sound</string>
     <string name="stop_record">Stop Record Sound</string>

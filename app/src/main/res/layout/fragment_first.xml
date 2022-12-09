@@ -7,11 +7,11 @@
     tools:context=".FirstFragment">
 
     <Button
-        android:id="@+id/high_button"
+        android:id="@+id/attendance_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:soundEffectsEnabled="false"
-        android:text="@string/high"
+        android:text="@string/connect_server"
         app:layout_constraintBottom_toTopOf="@+id/low_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -27,9 +27,10 @@
         android:text="@string/low"
         app:layout_constraintBottom_toTopOf="@+id/record_button"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.724" />
+        app:layout_constraintVertical_bias="0.951" />
 
     <Button
         android:id="@+id/record_button"

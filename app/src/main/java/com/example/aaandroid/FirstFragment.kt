@@ -15,7 +15,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.aaandroid.databinding.FragmentFirstBinding
 import com.example.aaandroid.domain.AttendanceWebSocketListener
-import com.example.aaandroid.domain.FileWebSocketListener
 import com.example.aaandroid.domain.HelloWebSocketListener.Companion.NORMAL_CLOSURE_STATUS
 import com.example.aaandroid.domain.WavRecorder
 import okhttp3.OkHttpClient
@@ -45,7 +44,7 @@ class FirstFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
 
@@ -68,12 +67,12 @@ class FirstFragment : Fragment() {
         webSocket.cancel()
     }
 
-    fun openWebSocket() {
+    private fun openWebSocket() {
         client = OkHttpClient()
 
-        binding.highButton.setOnClickListener {
+        binding.attendanceButton.setOnClickListener {
             val request: Request = Request.Builder()
-                .url("ws://10.210.131.68:8000/attendance")
+                .url("ws://10.210.131.68:8000$ATTENDANCE_URN")
                 .build()
             val listener = AttendanceWebSocketListener(
                 20163062,
@@ -86,7 +85,7 @@ class FirstFragment : Fragment() {
         }
 
         binding.lowButton.setOnClickListener {
-            webSocket.send("asdasdfasdfasdf")
+            playChirp()
         }
         binding.recordButton.setOnClickListener {
             Log.d("Record", "Start recording")
@@ -100,7 +99,7 @@ class FirstFragment : Fragment() {
         }
     }
 
-    fun loadSoundPool() {
+    private fun loadSoundPool() {
         soundPool =
             SoundPool(
                 3,
@@ -113,22 +112,22 @@ class FirstFragment : Fragment() {
     }
 
     private fun startRecording() {
-        if (CheckPermissions()) {
+        if (checkPermission()) {
             wavRecorder.startRecording()
         } else {
             // if audio recording permissions are
-            // not granted by user below method will
+            // not grantsed by user below method will
             // ask for runtime permission for mic and storage.
-            RequestPermissions()
+            requestPermission()
             Log.d("Record", "request permission")
         }
     }
 
-    fun stopRecording() {
+    private fun stopRecording() {
         wavRecorder.stopRecording()
     }
 
-    fun CheckPermissions(): Boolean {
+    private fun checkPermission(): Boolean {
         // this method is used to check permission
         val result = context?.let {
             ContextCompat.checkSelfPermission(
@@ -145,7 +144,7 @@ class FirstFragment : Fragment() {
         return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED
     }
 
-    private fun RequestPermissions() {
+    private fun requestPermission() {
         // this method is used to request the
         // permission for audio recording and storage.
         ActivityCompat.requestPermissions(
@@ -155,36 +154,35 @@ class FirstFragment : Fragment() {
         )
     }
 
-    fun playChirp() {
-
+    private fun playChirp() {
+        soundPool.play(lowFreq, 1F, 1F, 0, 0, 1F)
     }
 
-    fun recordAudio() {
-
+    private fun recordAudio() {
+        startRecording()
     }
 
-    fun sendWavFile() {
+    private fun sendWavFile() {
         Log.d("Record", "Stop recording")
         stopRecording()
         Log.d("Record", "recording stopped")
-        val request: Request = Request.Builder()
-            .url("ws://10.210.131.68:8000/file")
-            .build()
-        val listener = FileWebSocketListener()
 
-        Log.d("Socket", "start File Send")
-        val webSocket = client.newWebSocket(request, listener)
+
+        Log.d("FileRead", "start file read")
         val file =
             File(WAV_FILE_PATH)
         val fileBytes = file.readBytes()
+        Log.d("FileRead", "reading file has done")
+        Log.d("Socket", "start File Send")
         webSocket.send(ByteString.of(fileBytes, 0, fileBytes.size))
         Log.d("Socket", "file has sended")
     }
 
     companion object {
-        private val REQUEST_AUDIO_PERMISSION_CODE = 1
+        private const val REQUEST_AUDIO_PERMISSION_CODE = 1
         private val WAV_FILE_PATH =
             Environment.getExternalStorageDirectory().absolutePath + "/data/path_to_file.wav"
+        private const val ATTENDANCE_URN = "/attendance"
     }
 
 }
