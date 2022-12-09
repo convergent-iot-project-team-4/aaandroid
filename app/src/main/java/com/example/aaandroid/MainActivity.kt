@@ -32,10 +32,10 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         soundPool = SoundPool(
-                3,
-                AudioManager.STREAM_MUSIC,
-                0
-            )
+            3,
+            AudioManager.STREAM_MUSIC,
+            0
+        )
 
         chirp = soundPool
             .load(
@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
             )
 
         binding.fab.setOnClickListener { view ->
-            soundPool.play(chirp, 1F, 1F,0,0, 1F);
+            soundPool.play(chirp, 1F, 1F, 0, 0, 1F);
         }
     }
 

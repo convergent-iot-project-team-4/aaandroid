@@ -6,7 +6,7 @@ import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import okio.ByteString
 
-class FileWebSocketListener(): WebSocketListener() {
+class FileWebSocketListener() : WebSocketListener() {
     override fun onMessage(webSocket: WebSocket, text: String) {
         Log.d("Socket", text)
     }

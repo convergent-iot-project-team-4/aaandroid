@@ -12,7 +12,7 @@ class HelloWebSocketListener : WebSocketListener() {
     }
 
     override fun onMessage(webSocket: WebSocket, text: String) {
-        Log.d("Socket","Receiving : $text")
+        Log.d("Socket", "Receiving : $text")
     }
 
     override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
@@ -20,13 +20,13 @@ class HelloWebSocketListener : WebSocketListener() {
     }
 
     override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
-        Log.d("Socket","Closing : $code / $reason")
+        Log.d("Socket", "Closing : $code / $reason")
         webSocket.close(NORMAL_CLOSURE_STATUS, null)
         webSocket.cancel()
     }
 
     override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
-        Log.d("Socket","Error : " + t.message)
+        Log.d("Socket", "Error : " + t.message)
     }
 
     companion object {
@@ -34,4 +34,4 @@ class HelloWebSocketListener : WebSocketListener() {
     }
 }
 
-data class StudentInfo public constructor(val id: Number, val name:String) {}
+data class StudentInfo public constructor(val id: Number, val name: String) {}
