@@ -1,9 +1,6 @@
 package com.example.aaandroid
 
-import android.media.AudioAttributes
-import android.media.AudioManager
-import android.media.SoundPool
-import android.os.Build
+import android.media.*
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -13,9 +10,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.aaandroid.databinding.ActivityMainBinding
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import com.example.aaandroid.domain.WebSocketListener
 
 
 class MainActivity : AppCompatActivity() {
@@ -37,29 +31,11 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        soundPool = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
-        ) {
-            val audioAttributes = AudioAttributes.Builder()
-                .setUsage(
-                    AudioAttributes.USAGE_ASSISTANCE_SONIFICATION
-                )
-                .setContentType(
-                    AudioAttributes.CONTENT_TYPE_SONIFICATION
-                )
-                .build()
-            SoundPool.Builder()
-                .setMaxStreams(3)
-                .setAudioAttributes(
-                    audioAttributes
-                )
-                .build()
-        } else {
-            SoundPool(
+        soundPool = SoundPool(
                 3,
                 AudioManager.STREAM_MUSIC,
                 0
             )
-        }
 
         chirp = soundPool
             .load(

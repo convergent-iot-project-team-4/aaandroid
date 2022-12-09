@@ -6,9 +6,9 @@ import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import okio.ByteString
 
-class WebSocketListener : WebSocketListener() {
+class HelloWebSocketListener : WebSocketListener() {
     override fun onOpen(webSocket: WebSocket, response: Response) {
-        webSocket.send("{\"type\":\"ticker\", \"symbols\": [\"BTC_KRW\"], \"tickTypes\": [\"30M\"]}")
+        webSocket.send("hello")
     }
 
     override fun onMessage(webSocket: WebSocket, text: String) {
@@ -33,3 +33,5 @@ class WebSocketListener : WebSocketListener() {
         const val NORMAL_CLOSURE_STATUS = 1000
     }
 }
+
+data class StudentInfo public constructor(val id: Number, val name:String) {}
