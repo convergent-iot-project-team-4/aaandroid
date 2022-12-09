@@ -74,7 +74,7 @@ class FirstFragment : Fragment() {
 
         binding.attendanceButton.setOnClickListener {
             val request: Request = Request.Builder()
-                .url("ws://10.210.131.68:8000$ATTENDANCE_URN")
+                .url("ws://10.210.128.128:8000$ATTENDANCE_URN")
                 .build()
             val listener = AttendanceWebSocketListener(
                 "20163062",
@@ -96,7 +96,8 @@ class FirstFragment : Fragment() {
         }
         binding.stopRecordButton.setOnClickListener {
             Log.d("Record", "Stop recording")
-            stopRecording()
+            sendWavFile()
+            //stopRecording()
             Log.d("Record", "recording stopped")
         }
     }
@@ -191,7 +192,7 @@ class FirstFragment : Fragment() {
         private const val REQUEST_AUDIO_PERMISSION_CODE = 1
         private val WAV_FILE_PATH =
             Environment.getExternalStorageDirectory().absolutePath + "/data/path_to_file.wav"
-        private const val ATTENDANCE_URN = "/attendance"
+        private const val ATTENDANCE_URN = "/ws"
     }
 
 }
