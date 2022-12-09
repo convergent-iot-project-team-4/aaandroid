@@ -22,6 +22,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
 import okio.ByteString
+import org.json.JSONObject
 import java.io.File
 
 
@@ -157,6 +158,9 @@ class FirstFragment : Fragment() {
 
     private fun playChirp() {
         soundPool.play(lowFreq, 1F, 1F, 0, 0, 1F)
+        val json = JSONObject()
+        json.put("type", "complete_chirp")
+        webSocket.send(json.toString())
     }
 
     private fun recordAudio() {
@@ -171,13 +175,15 @@ class FirstFragment : Fragment() {
 
         Log.d("FileRead", "start file read")
         val file = File(WAV_FILE_PATH)
-        val fileBytes = file.readBytes()
         val fileString = Base64.encodeToString(file.readBytes(), Base64.NO_WRAP)
+        val json = JSONObject()
+        json.put("type", "student_corner_file")
+        json.put("body", fileString)
 
 
         Log.d("FileRead", "reading file has done")
         Log.d("Socket", "start File Send")
-        webSocket.send(ByteString.of(fileBytes, 0, fileBytes.size))
+        webSocket.send(json.toString())
         Log.d("Socket", "file has sended")
     }
 

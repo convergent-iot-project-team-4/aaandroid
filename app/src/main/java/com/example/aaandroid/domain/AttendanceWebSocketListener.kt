@@ -23,13 +23,13 @@ class AttendanceWebSocketListener(
     }
 
     override fun onMessage(webSocket: WebSocket, text: String) {
-        if (text == "start recording") {
+        if (text == "start_recording") {
             recordInvoker()
         }
-        if (text == "play chirp") {
+        if (text == "play_chirp") {
             chirpInvoker()
         }
-        if (text == "send wav file") {
+        if (text == "send_wav_file") {
             fileSendInvoker()
         }
         Log.d("Socket", text)
