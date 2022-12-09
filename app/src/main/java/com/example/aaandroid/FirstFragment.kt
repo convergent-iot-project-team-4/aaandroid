@@ -6,6 +6,7 @@ import android.media.AudioManager
 import android.media.SoundPool
 import android.os.Bundle
 import android.os.Environment
+import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -75,7 +76,7 @@ class FirstFragment : Fragment() {
                 .url("ws://10.210.131.68:8000$ATTENDANCE_URN")
                 .build()
             val listener = AttendanceWebSocketListener(
-                20163062,
+                "20163062",
                 this::recordAudio,
                 this::playChirp,
                 this::sendWavFile
@@ -169,9 +170,11 @@ class FirstFragment : Fragment() {
 
 
         Log.d("FileRead", "start file read")
-        val file =
-            File(WAV_FILE_PATH)
+        val file = File(WAV_FILE_PATH)
         val fileBytes = file.readBytes()
+        val fileString = Base64.encodeToString(file.readBytes(), Base64.NO_WRAP)
+
+
         Log.d("FileRead", "reading file has done")
         Log.d("Socket", "start File Send")
         webSocket.send(ByteString.of(fileBytes, 0, fileBytes.size))

@@ -5,16 +5,21 @@ import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import okio.ByteString
+import org.json.JSONObject
 
 class AttendanceWebSocketListener(
-    val id: Number,
+    val id: String,
     val recordInvoker: () -> Unit,
     val chirpInvoker: () -> Unit,
     val fileSendInvoker: () -> Unit
 ) : WebSocketListener() {
 
     override fun onOpen(webSocket: WebSocket, response: Response) {
-        webSocket.send(id.toString())
+        val json = JSONObject()
+        json.put("type", "init")
+        json.put("device_name", id)
+
+        webSocket.send(json.toString())
     }
 
     override fun onMessage(webSocket: WebSocket, text: String) {
