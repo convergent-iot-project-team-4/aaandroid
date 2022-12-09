@@ -70,7 +70,8 @@ class FirstFragment : Fragment() {
             val request: Request = Request.Builder()
                 .url("ws://10.210.131.68:8000/attendance")
                 .build()
-            val listener = AttendanceWebSocketListener(20163062) {}
+            val listener = AttendanceWebSocketListener(20163062) {
+            }
             webSocket = client.newWebSocket(request, listener)
         }
 
